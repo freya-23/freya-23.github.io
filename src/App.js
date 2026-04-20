@@ -1,17 +1,57 @@
 import React, { useState, useEffect, useRef } from "react";
-const FONTS_CSS = `
+// ─── THEME PALETTES ─────────────────────────────────────────
+const THEMES = {
+  sunset: {
+    name: "Warm Sunset",
+    desc: "Peach + terracotta",
+    bg: "#FBF4EC",
+    bgSoft: "#F5E8DB",
+    accent: "#C65D3F",
+    accentSoft: "#E89876",
+    text: "#2A1810",
+    muted: "#8B6F5E",
+    card: "rgba(255,250,244,0.6)",
+    rule: "rgba(198,93,63,0.16)",
+  },
+  forest: {
+    name: "Forest Editorial",
+    desc: "Moss green + cream",
+    bg: "#F4F1E8",
+    bgSoft: "#EDE8D7",
+    accent: "#3F6B4F",
+    accentSoft: "#7AA88C",
+    text: "#1A2A1F",
+    muted: "#6B7A6F",
+    card: "rgba(253,252,246,0.6)",
+    rule: "rgba(63,107,79,0.16)",
+  },
+  slate: {
+    name: "Modern Slate",
+    desc: "Dusty blue + off-white",
+    bg: "#F4F3F0",
+    bgSoft: "#E8E9EC",
+    accent: "#4A6A8A",
+    accentSoft: "#8BA4BE",
+    text: "#161A23",
+    muted: "#6B7280",
+    card: "rgba(252,252,250,0.6)",
+    rule: "rgba(74,106,138,0.16)",
+  },
+};
+const DEFAULT_THEME = "sunset";
+const buildFontsCSS = (t) => `
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap');
   :root {
-    --bg: #F5F1EA;
-    --bg-soft: #EFEADF;
-    --accent: #8B6A47;
-    --accent-soft: #B8956D;
-    --text: #1F1A14;
-    --muted: #7A6E5E;
-    --card: rgba(255,253,248,0.55);
-    --card-border: rgba(139,106,71,0.18);
-    --card-shadow: 0 1px 2px rgba(31,26,20,0.04), 0 8px 24px rgba(31,26,20,0.03);
-    --rule: rgba(139,106,71,0.12);
+    --bg: ${t.bg};
+    --bg-soft: ${t.bgSoft};
+    --accent: ${t.accent};
+    --accent-soft: ${t.accentSoft};
+    --text: ${t.text};
+    --muted: ${t.muted};
+    --card: ${t.card};
+    --card-border: ${t.rule};
+    --card-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.03);
+    --rule: ${t.rule};
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -250,6 +290,35 @@ const CERTIFICATIONS = [
   "C# Programming for Unity Game Development",
 ];
 const PAGES = ["Home", "About", "Projects", "Skills", "Experience", "Contact"];
+// ─── THEME SWITCHER ───────────────────────────────────────
+function ThemeSwitcher({ activeTheme, setTheme }) {
+  return (
+    <div style={{
+      position: "fixed", bottom: "20px", right: "20px", zIndex: 200,
+      background: "var(--card)", backdropFilter: "blur(16px)",
+      border: "1px solid var(--rule)", borderRadius: "100px",
+      padding: "8px", display: "flex", gap: "6px",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+    }}>
+      {Object.entries(THEMES).map(([key, theme]) => (
+        <button
+          key={key}
+          onClick={() => setTheme(key)}
+          title={`${theme.name} — ${theme.desc}`}
+          style={{
+            width: "28px", height: "28px", borderRadius: "50%",
+            border: activeTheme === key ? "2px solid var(--text)" : "2px solid transparent",
+            background: theme.accent,
+            cursor: "pointer", padding: 0,
+            transition: "all 0.2s ease",
+            outline: "none",
+            boxShadow: activeTheme === key ? "0 0 0 3px var(--bg)" : "none",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 // ─── SHARED ───────────────────────────────────────────────
 function Page({ children }) {
   return (
@@ -1009,6 +1078,18 @@ function ContactPage() {
 export default function Portfolio() {
   const [page, setPage] = useState("Home");
   const [fadeKey, setFadeKey] = useState(0);
+  const [themeKey, setThemeKey] = useState(() => {
+    try {
+      return localStorage.getItem("freya-theme") || DEFAULT_THEME;
+    } catch (e) {
+      return DEFAULT_THEME;
+    }
+  });
+  const handleSetTheme = (k) => {
+    setThemeKey(k);
+    try { localStorage.setItem("freya-theme", k); } catch (e) {}
+  };
+  const theme = THEMES[themeKey] || THEMES[DEFAULT_THEME];
   const changePage = (p) => {
     setPage(p);
     setFadeKey(k => k + 1);
@@ -1027,10 +1108,11 @@ export default function Portfolio() {
   };
   return (
     <>
-      <style>{FONTS_CSS}</style>
+      <style>{buildFontsCSS(theme)}</style>
       <Page>
         <Navbar activePage={page} setPage={changePage} />
         <div key={fadeKey} style={{ animation: "scaleIn 0.3s ease-out" }}>{render()}</div>
+        <ThemeSwitcher activeTheme={themeKey} setTheme={handleSetTheme} />
       </Page>
     </>
   );
