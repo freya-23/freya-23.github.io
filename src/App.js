@@ -1,46 +1,123 @@
 import React, { useState, useEffect, useRef } from "react";
-// ─── THEME PALETTES ─────────────────────────────────────────
-const THEMES = {
-  sunset: {
-    name: "Warm Sunset",
-    desc: "Peach + terracotta",
-    bg: "#FBF4EC",
-    bgSoft: "#F5E8DB",
-    accent: "#C65D3F",
-    accentSoft: "#E89876",
-    text: "#2A1810",
-    muted: "#8B6F5E",
-    card: "rgba(255,250,244,0.6)",
-    rule: "rgba(198,93,63,0.16)",
+// ─── DESIGN SYSTEM ──────────────────────────────────────────
+// Light + Dark pairs for each color energy
+const COLOR_THEMES = {
+  vibrant: {
+    name: "Vibrant",
+    desc: "Energetic coral",
+    light: {
+      bg: "#FEFAF5", bgSoft: "#FDF0E3",
+      accent: "#E85D3F", accentSoft: "#FF8E6C",
+      text: "#1A0F0A", muted: "#7A6055",
+      card: "rgba(255,253,250,0.55)", rule: "rgba(232,93,63,0.14)",
+    },
+    dark: {
+      bg: "#15100D", bgSoft: "#1F1814",
+      accent: "#FF8E6C", accentSoft: "#FFA888",
+      text: "#FDF0E3", muted: "#A8948A",
+      card: "rgba(30,22,18,0.6)", rule: "rgba(255,142,108,0.14)",
+    },
   },
-  forest: {
-    name: "Forest Editorial",
-    desc: "Moss green + cream",
-    bg: "#F4F1E8",
-    bgSoft: "#EDE8D7",
-    accent: "#3F6B4F",
-    accentSoft: "#7AA88C",
-    text: "#1A2A1F",
-    muted: "#6B7A6F",
-    card: "rgba(253,252,246,0.6)",
-    rule: "rgba(63,107,79,0.16)",
+  jewel: {
+    name: "Jewel",
+    desc: "Bold magenta",
+    light: {
+      bg: "#FCF8FC", bgSoft: "#F4E8F2",
+      accent: "#9D2C78", accentSoft: "#C966A5",
+      text: "#1C0E1A", muted: "#7A5D73",
+      card: "rgba(254,250,253,0.55)", rule: "rgba(157,44,120,0.14)",
+    },
+    dark: {
+      bg: "#140B14", bgSoft: "#1E141C",
+      accent: "#D97BB5", accentSoft: "#E89BC8",
+      text: "#F4E8F2", muted: "#A68FA0",
+      card: "rgba(30,20,28,0.6)", rule: "rgba(217,123,181,0.14)",
+    },
   },
-  slate: {
-    name: "Modern Slate",
-    desc: "Dusty blue + off-white",
-    bg: "#F4F3F0",
-    bgSoft: "#E8E9EC",
-    accent: "#4A6A8A",
-    accentSoft: "#8BA4BE",
-    text: "#161A23",
-    muted: "#6B7280",
-    card: "rgba(252,252,250,0.6)",
-    rule: "rgba(74,106,138,0.16)",
+  electric: {
+    name: "Electric",
+    desc: "Teal & violet",
+    light: {
+      bg: "#F8FBFB", bgSoft: "#E8F2F2",
+      accent: "#0D7377", accentSoft: "#14A6AC",
+      text: "#0A1A1C", muted: "#5E7678",
+      card: "rgba(250,253,253,0.55)", rule: "rgba(13,115,119,0.14)",
+    },
+    dark: {
+      bg: "#0A1416", bgSoft: "#131E21",
+      accent: "#4ECDC4", accentSoft: "#7DE2DA",
+      text: "#E8F2F2", muted: "#8FA5A8",
+      card: "rgba(20,32,34,0.6)", rule: "rgba(78,205,196,0.14)",
+    },
+  },
+  pastel: {
+    name: "Pastel",
+    desc: "Lavender & peach",
+    light: {
+      bg: "#FBF6FB", bgSoft: "#F3EBF5",
+      accent: "#8B5A96", accentSoft: "#C9A8D4",
+      text: "#201530", muted: "#7A6884",
+      card: "rgba(253,250,253,0.55)", rule: "rgba(139,90,150,0.14)",
+    },
+    dark: {
+      bg: "#18121F", bgSoft: "#221B2B",
+      accent: "#C9A8D4", accentSoft: "#E0C6E8",
+      text: "#F3EBF5", muted: "#A090A8",
+      card: "rgba(30,22,38,0.6)", rule: "rgba(201,168,212,0.14)",
+    },
   },
 };
-const DEFAULT_THEME = "sunset";
-const buildFontsCSS = (t) => `
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap');
+// Font pairs: heading / body
+const FONT_THEMES = {
+  editorial: {
+    name: "Editorial",
+    desc: "Fraunces + Inter",
+    heading: "'Fraunces', serif",
+    body: "'Inter', sans-serif",
+    import: "family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700",
+    headingWeight: 500,
+    headingStyle: "normal",
+    letterSpacing: "-0.02em",
+  },
+  geometric: {
+    name: "Geometric",
+    desc: "Space Grotesk",
+    heading: "'Space Grotesk', sans-serif",
+    body: "'Space Grotesk', sans-serif",
+    import: "family=Space+Grotesk:wght@300;400;500;600;700",
+    headingWeight: 600,
+    headingStyle: "normal",
+    letterSpacing: "-0.03em",
+  },
+  devEditorial: {
+    name: "Developer",
+    desc: "Plex Serif + Plex Mono",
+    heading: "'IBM Plex Serif', serif",
+    body: "'IBM Plex Mono', monospace",
+    import: "family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400",
+    headingWeight: 600,
+    headingStyle: "normal",
+    letterSpacing: "-0.01em",
+  },
+  minimal: {
+    name: "Minimal",
+    desc: "Inter only",
+    heading: "'Inter', sans-serif",
+    body: "'Inter', sans-serif",
+    import: "family=Inter:wght@300;400;500;600;700;800",
+    headingWeight: 700,
+    headingStyle: "normal",
+    letterSpacing: "-0.035em",
+  },
+};
+const DEFAULT_COLOR = "vibrant";
+const DEFAULT_FONT = "editorial";
+const DEFAULT_MODE = "light";
+const buildFontsCSS = (colorKey, fontKey, mode) => {
+  const t = COLOR_THEMES[colorKey][mode];
+  const f = FONT_THEMES[fontKey];
+  return `
+  @import url('https://fonts.googleapis.com/css2?${f.import}&display=swap');
   :root {
     --bg: ${t.bg};
     --bg-soft: ${t.bgSoft};
@@ -50,17 +127,23 @@ const buildFontsCSS = (t) => `
     --muted: ${t.muted};
     --card: ${t.card};
     --card-border: ${t.rule};
-    --card-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.03);
+    --card-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
     --rule: ${t.rule};
+    --font-heading: ${f.heading};
+    --font-body: ${f.body};
+    --heading-weight: ${f.headingWeight};
+    --heading-style: ${f.headingStyle};
+    --heading-tracking: ${f.letterSpacing};
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
     color: var(--text);
-    font-family: 'Inter', -apple-system, sans-serif;
+    font-family: var(--font-body);
     background: var(--bg);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   ::selection {
     background: var(--accent);
@@ -86,6 +169,7 @@ const buildFontsCSS = (t) => `
   .stagger-5 { animation-delay: 0.45s; opacity: 0; }
   .stagger-6 { animation-delay: 0.55s; opacity: 0; }
 `;
+};
 // ─── DATA ─────────────────────────────────────────────────
 const PROJECTS = [
   {
@@ -290,32 +374,167 @@ const CERTIFICATIONS = [
   "C# Programming for Unity Game Development",
 ];
 const PAGES = ["Home", "About", "Projects", "Skills", "Experience", "Contact"];
-// ─── THEME SWITCHER ───────────────────────────────────────
-function ThemeSwitcher({ activeTheme, setTheme }) {
+// ─── DESIGN CONTROLS PANEL ───────────────────────────────
+function DesignPanel({ colorKey, setColor, fontKey, setFont, mode, setMode }) {
+  const [open, setOpen] = useState(false);
   return (
     <div style={{
       position: "fixed", bottom: "20px", right: "20px", zIndex: 200,
-      background: "var(--card)", backdropFilter: "blur(16px)",
-      border: "1px solid var(--rule)", borderRadius: "100px",
-      padding: "8px", display: "flex", gap: "6px",
-      boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+      fontFamily: "var(--font-body)",
     }}>
-      {Object.entries(THEMES).map(([key, theme]) => (
-        <button
-          key={key}
-          onClick={() => setTheme(key)}
-          title={`${theme.name} — ${theme.desc}`}
-          style={{
-            width: "28px", height: "28px", borderRadius: "50%",
-            border: activeTheme === key ? "2px solid var(--text)" : "2px solid transparent",
-            background: theme.accent,
-            cursor: "pointer", padding: 0,
-            transition: "all 0.2s ease",
-            outline: "none",
-            boxShadow: activeTheme === key ? "0 0 0 3px var(--bg)" : "none",
-          }}
-        />
-      ))}
+      {/* Toggle button */}
+      <button
+        onClick={() => setOpen(!open)}
+        aria-label="Open design panel"
+        style={{
+          width: "48px", height: "48px", borderRadius: "50%",
+          background: "var(--accent)", color: "var(--bg)",
+          border: "none", cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+          transition: "all 0.2s ease",
+          position: "absolute", bottom: 0, right: 0,
+        }}
+        onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
+        onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="12" r="4" fill="currentColor" />
+          <line x1="12" y1="2" x2="12" y2="6" />
+          <line x1="12" y1="18" x2="12" y2="22" />
+          <line x1="2" y1="12" x2="6" y2="12" />
+          <line x1="18" y1="12" x2="22" y2="12" />
+        </svg>
+      </button>
+      {/* Panel */}
+      {open && (
+        <div style={{
+          position: "absolute", bottom: "60px", right: 0,
+          width: "280px",
+          background: "var(--bg)",
+          border: "1px solid var(--rule)",
+          borderRadius: "16px",
+          padding: "18px",
+          boxShadow: "0 10px 40px rgba(0,0,0,0.12)",
+          animation: "fadeUp 0.25s ease-out",
+        }}>
+          <div style={{
+            display: "flex", justifyContent: "space-between", alignItems: "center",
+            marginBottom: "14px",
+          }}>
+            <div style={{
+              fontFamily: "var(--font-heading)", fontWeight: "var(--heading-weight)",
+              fontSize: "0.95rem", color: "var(--text)",
+            }}>Customize</div>
+            <button
+              onClick={() => setOpen(false)}
+              style={{
+                background: "transparent", border: "none", cursor: "pointer",
+                color: "var(--muted)", fontSize: "1.2rem", padding: "4px 8px",
+              }}
+            >×</button>
+          </div>
+          {/* Mode toggle */}
+          <div style={{ marginBottom: "14px" }}>
+            <div style={{
+              fontSize: "0.68rem", fontWeight: 600, color: "var(--muted)",
+              letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "8px",
+            }}>Mode</div>
+            <div style={{ display: "flex", gap: "6px" }}>
+              {["light", "dark"].map(m => (
+                <button
+                  key={m}
+                  onClick={() => setMode(m)}
+                  style={{
+                    flex: 1,
+                    padding: "8px 12px", borderRadius: "8px",
+                    background: mode === m ? "var(--accent)" : "transparent",
+                    color: mode === m ? "var(--bg)" : "var(--text)",
+                    border: `1px solid ${mode === m ? "var(--accent)" : "var(--rule)"}`,
+                    cursor: "pointer",
+                    fontSize: "0.82rem", fontWeight: 500,
+                    fontFamily: "var(--font-body)",
+                    textTransform: "capitalize",
+                    transition: "all 0.15s ease",
+                  }}
+                >{m}</button>
+              ))}
+            </div>
+          </div>
+          {/* Color palette */}
+          <div style={{ marginBottom: "14px" }}>
+            <div style={{
+              fontSize: "0.68rem", fontWeight: 600, color: "var(--muted)",
+              letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "8px",
+            }}>Color</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "6px" }}>
+              {Object.entries(COLOR_THEMES).map(([key, c]) => {
+                const swatch = c[mode].accent;
+                const active = colorKey === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setColor(key)}
+                    style={{
+                      display: "flex", alignItems: "center", gap: "8px",
+                      padding: "8px 10px", borderRadius: "8px",
+                      background: active ? "var(--bg-soft)" : "transparent",
+                      border: `1px solid ${active ? "var(--accent)" : "var(--rule)"}`,
+                      cursor: "pointer", textAlign: "left",
+                      fontFamily: "var(--font-body)",
+                      transition: "all 0.15s ease",
+                    }}
+                  >
+                    <span style={{
+                      width: "14px", height: "14px", borderRadius: "50%",
+                      background: swatch, flexShrink: 0,
+                      boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.1)",
+                    }} />
+                    <span style={{ fontSize: "0.78rem", color: "var(--text)", fontWeight: 500 }}>
+                      {c.name}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          {/* Font */}
+          <div>
+            <div style={{
+              fontSize: "0.68rem", fontWeight: 600, color: "var(--muted)",
+              letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "8px",
+            }}>Typography</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+              {Object.entries(FONT_THEMES).map(([key, f]) => {
+                const active = fontKey === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setFont(key)}
+                    style={{
+                      padding: "8px 12px", borderRadius: "8px",
+                      background: active ? "var(--bg-soft)" : "transparent",
+                      border: `1px solid ${active ? "var(--accent)" : "var(--rule)"}`,
+                      cursor: "pointer", textAlign: "left",
+                      transition: "all 0.15s ease",
+                    }}
+                  >
+                    <div style={{
+                      fontFamily: f.heading, fontWeight: f.headingWeight,
+                      fontSize: "0.92rem", color: "var(--text)",
+                    }}>{f.name}</div>
+                    <div style={{
+                      fontFamily: f.body, fontSize: "0.7rem", color: "var(--muted)",
+                      marginTop: "2px",
+                    }}>{f.desc}</div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -341,7 +560,7 @@ function Navbar({ activePage, setPage }) {
       display: "flex", justifyContent: "space-between", alignItems: "center",
     }}>
       <div onClick={() => setPage("Home")} style={{
-        fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: "1.3rem",
+        fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.3rem",
         cursor: "pointer", fontStyle: "italic", color: "var(--text)",
         letterSpacing: "-0.01em",
       }}>
@@ -357,7 +576,7 @@ function Navbar({ activePage, setPage }) {
             cursor: "pointer",
             fontSize: "0.88rem",
             fontWeight: activePage === page ? 600 : 500,
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: "var(--font-body)",
             transition: "color 0.2s ease",
             position: "relative",
           }}
@@ -386,7 +605,7 @@ function SectionLabel({ number, text }) {
       letterSpacing: "0.2em",
       textTransform: "uppercase",
       marginBottom: "16px",
-      fontFamily: "'Inter', sans-serif",
+      fontFamily: "var(--font-body)",
     }}>
       {number} — {text}
     </div>
@@ -434,7 +653,7 @@ function HomePage({ setPage }) {
           </span>
         </div>
         <h1 className="fade-up stagger-2" style={{
-          fontFamily: "'Fraunces', serif", fontWeight: 500,
+          fontFamily: "var(--font-heading)", fontWeight: 500,
           fontSize: "clamp(3rem, 8vw, 5.8rem)", lineHeight: 1.02,
           letterSpacing: "-0.035em", marginBottom: "32px",
           color: "var(--text)",
@@ -454,7 +673,7 @@ function HomePage({ setPage }) {
           <button onClick={() => setPage("Projects")} style={{
             background: "var(--accent)", color: "var(--bg)", border: "none",
             padding: "13px 28px", borderRadius: "100px",
-            cursor: "pointer", fontSize: "0.92rem", fontWeight: 500, fontFamily: "'Inter', sans-serif",
+            cursor: "pointer", fontSize: "0.92rem", fontWeight: 500, fontFamily: "var(--font-body)",
             transition: "all 0.2s ease", letterSpacing: "0.01em",
           }}
             onMouseEnter={e => { e.target.style.transform = "translateY(-1px)"; e.target.style.background = "var(--text)"; }}
@@ -463,7 +682,7 @@ function HomePage({ setPage }) {
           <button onClick={() => setPage("Contact")} style={{
             background: "transparent", color: "var(--text)",
             border: "1px solid var(--text)", padding: "13px 28px", borderRadius: "100px",
-            cursor: "pointer", fontSize: "0.92rem", fontWeight: 500, fontFamily: "'Inter', sans-serif",
+            cursor: "pointer", fontSize: "0.92rem", fontWeight: 500, fontFamily: "var(--font-body)",
             transition: "all 0.2s ease",
           }}
             onMouseEnter={e => { e.target.style.background = "var(--text)"; e.target.style.color = "var(--bg)"; }}
@@ -489,7 +708,7 @@ function HomePage({ setPage }) {
               }}
             >
               <div style={{
-                fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: "1rem",
+                fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1rem",
                 color: "var(--text)", marginBottom: "6px",
               }}>
                 {link.label}
@@ -520,7 +739,7 @@ function HomePage({ setPage }) {
           ].map((s, i) => (
             <div key={i}>
               <div style={{
-                fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: "1.5rem",
+                fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.5rem",
                 color: "var(--text)", letterSpacing: "-0.01em",
               }}>{s.num}</div>
               <div style={{ fontSize: "0.75rem", color: "var(--muted)", marginTop: "4px", fontWeight: 500, letterSpacing: "0.03em" }}>{s.label}</div>
@@ -537,7 +756,7 @@ function AboutPage() {
     <div style={{ minHeight: "100vh", padding: "140px 48px 80px", maxWidth: "1100px", margin: "0 auto" }}>
       <div className="fade-up stagger-1"><SectionLabel number="01" text="About" /></div>
       <h2 className="fade-up stagger-2" style={{
-        fontFamily: "'Fraunces', serif", fontWeight: 500,
+        fontFamily: "var(--font-heading)", fontWeight: 500,
         fontSize: "clamp(2.2rem, 5vw, 3.2rem)", lineHeight: 1.12,
         marginBottom: "56px", letterSpacing: "-0.02em", color: "var(--text)",
       }}>
@@ -568,7 +787,7 @@ function AboutPage() {
                 letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "10px",
               }}>{ed.period}</div>
               <h4 style={{
-                fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: "1.05rem",
+                fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.05rem",
                 marginBottom: "4px", color: "var(--text)",
               }}>{ed.degree}</h4>
               <div style={{ color: "var(--muted)", fontWeight: 500, fontSize: "0.88rem", marginBottom: "10px" }}>{ed.school}</div>
@@ -620,7 +839,7 @@ function ProjectActions({ proj }) {
             padding: "10px 22px", borderRadius: "100px",
             fontSize: "0.85rem", fontWeight: 500,
             textDecoration: "none", transition: "all 0.2s ease",
-            fontFamily: "'Inter', sans-serif", letterSpacing: "0.01em",
+            fontFamily: "var(--font-body)", letterSpacing: "0.01em",
           }}
           onMouseEnter={e => { e.currentTarget.style.background = "var(--text)"; }}
           onMouseLeave={e => { e.currentTarget.style.background = "var(--accent)"; }}
@@ -641,7 +860,7 @@ function ProjectActions({ proj }) {
             padding: "10px 22px", borderRadius: "100px",
             fontSize: "0.85rem", fontWeight: 500,
             textDecoration: "none", transition: "all 0.2s ease",
-            fontFamily: "'Inter', sans-serif", letterSpacing: "0.01em",
+            fontFamily: "var(--font-body)", letterSpacing: "0.01em",
           }}
           onMouseEnter={e => { e.currentTarget.style.background = "var(--text)"; e.currentTarget.style.color = "var(--bg)"; }}
           onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--text)"; }}
@@ -685,7 +904,7 @@ function ProjectCard({ proj, index, isOpen, onToggle }) {
         <div style={{ flex: 1 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "10px" }}>
             <span style={{
-              fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: "0.9rem",
+              fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "0.9rem",
               color: "var(--accent)",
             }}>
               {String(index + 1).padStart(2, "0")}
@@ -710,7 +929,7 @@ function ProjectCard({ proj, index, isOpen, onToggle }) {
             )}
           </div>
           <h3 style={{
-            fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: "1.3rem",
+            fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.3rem",
             lineHeight: 1.3, marginBottom: "8px", color: "var(--text)",
             letterSpacing: "-0.005em",
           }}>
@@ -770,7 +989,7 @@ function ProjectCard({ proj, index, isOpen, onToggle }) {
                   {h.label}
                 </div>
                 <div style={{
-                  fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: "1rem",
+                  fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1rem",
                   color: "var(--text)", letterSpacing: "-0.01em",
                 }}>
                   {h.value}
@@ -802,7 +1021,7 @@ function ProjectsPage() {
     <div style={{ minHeight: "100vh", padding: "140px 48px 80px", maxWidth: "1000px", margin: "0 auto" }}>
       <div className="fade-up stagger-1"><SectionLabel number="02" text="Projects" /></div>
       <h2 className="fade-up stagger-2" style={{
-        fontFamily: "'Fraunces', serif", fontWeight: 500,
+        fontFamily: "var(--font-heading)", fontWeight: 500,
         fontSize: "clamp(2.2rem, 5vw, 3.2rem)", lineHeight: 1.12,
         marginBottom: "18px", letterSpacing: "-0.02em", color: "var(--text)",
       }}>
@@ -839,7 +1058,7 @@ function SkillsPage() {
     <div style={{ minHeight: "100vh", padding: "140px 48px 80px", maxWidth: "1000px", margin: "0 auto" }}>
       <div className="fade-up stagger-1"><SectionLabel number="03" text="Skills" /></div>
       <h2 className="fade-up stagger-2" style={{
-        fontFamily: "'Fraunces', serif", fontWeight: 500,
+        fontFamily: "var(--font-heading)", fontWeight: 500,
         fontSize: "clamp(2.2rem, 5vw, 3.2rem)", lineHeight: 1.12,
         marginBottom: "18px", letterSpacing: "-0.02em", color: "var(--text)",
       }}>
@@ -869,7 +1088,7 @@ function SkillsPage() {
               borderBottom: "1px solid var(--rule)",
             }}>
               <h3 style={{
-                fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: "1.15rem",
+                fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.15rem",
                 color: "var(--text)", letterSpacing: "-0.005em",
               }}>{cat}</h3>
               <span style={{
@@ -921,7 +1140,7 @@ function ExperiencePage() {
     <div style={{ minHeight: "100vh", padding: "140px 48px 80px", maxWidth: "1000px", margin: "0 auto" }}>
       <div className="fade-up stagger-1"><SectionLabel number="04" text="Experience" /></div>
       <h2 className="fade-up stagger-2" style={{
-        fontFamily: "'Fraunces', serif", fontWeight: 500,
+        fontFamily: "var(--font-heading)", fontWeight: 500,
         fontSize: "clamp(2.2rem, 5vw, 3.2rem)", lineHeight: 1.12,
         marginBottom: "56px", letterSpacing: "-0.02em", color: "var(--text)",
       }}>
@@ -960,7 +1179,7 @@ function ExperiencePage() {
               }}>
                 <div>
                   <h3 style={{
-                    fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: "1.2rem",
+                    fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.2rem",
                     color: "var(--text)", letterSpacing: "-0.005em",
                   }}>{exp.role}</h3>
                   <div style={{
@@ -1004,7 +1223,7 @@ function ContactPage() {
     <div style={{ minHeight: "100vh", padding: "140px 48px 80px", maxWidth: "1000px", margin: "0 auto" }}>
       <div className="fade-up stagger-1"><SectionLabel number="05" text="Contact" /></div>
       <h2 className="fade-up stagger-2" style={{
-        fontFamily: "'Fraunces', serif", fontWeight: 500,
+        fontFamily: "var(--font-heading)", fontWeight: 500,
         fontSize: "clamp(2.2rem, 5vw, 3.2rem)", lineHeight: 1.12,
         marginBottom: "22px", letterSpacing: "-0.02em", color: "var(--text)",
       }}>
@@ -1037,7 +1256,7 @@ function ContactPage() {
               letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "10px",
             }}>{c.label}</div>
             <div style={{
-              fontFamily: "'Fraunces', serif", fontWeight: 500, fontSize: "1rem",
+              fontFamily: "var(--font-heading)", fontWeight: 500, fontSize: "1rem",
               wordBreak: "break-all", color: "var(--text)", marginBottom: "14px",
               letterSpacing: "-0.005em",
             }}>{c.value}</div>
@@ -1057,7 +1276,7 @@ function ContactPage() {
           letterSpacing: "0.16em", textTransform: "uppercase",
         }}>Phone</div>
         <div style={{
-          fontFamily: "'Fraunces', serif", fontWeight: 500, fontSize: "1rem",
+          fontFamily: "var(--font-heading)", fontWeight: 500, fontSize: "1rem",
           color: "var(--text)", letterSpacing: "-0.005em",
         }}>+1 (480) 494-3563</div>
       </div>
@@ -1066,7 +1285,7 @@ function ContactPage() {
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
         <div style={{
-          fontFamily: "'Fraunces', serif", fontWeight: 500, fontSize: "1rem",
+          fontFamily: "var(--font-heading)", fontWeight: 500, fontSize: "1rem",
           fontStyle: "italic", color: "var(--text)",
         }}>Freya Shah</div>
         <div style={{ fontSize: "0.78rem", color: "var(--muted)" }}>Designed with care · © 2026</div>
@@ -1078,18 +1297,30 @@ function ContactPage() {
 export default function Portfolio() {
   const [page, setPage] = useState("Home");
   const [fadeKey, setFadeKey] = useState(0);
-  const [themeKey, setThemeKey] = useState(() => {
-    try {
-      return localStorage.getItem("freya-theme") || DEFAULT_THEME;
-    } catch (e) {
-      return DEFAULT_THEME;
-    }
+  const [colorKey, setColorKey] = useState(() => {
+    try { return localStorage.getItem("freya-color") || DEFAULT_COLOR; }
+    catch (e) { return DEFAULT_COLOR; }
   });
-  const handleSetTheme = (k) => {
-    setThemeKey(k);
-    try { localStorage.setItem("freya-theme", k); } catch (e) {}
+  const [fontKey, setFontKey] = useState(() => {
+    try { return localStorage.getItem("freya-font") || DEFAULT_FONT; }
+    catch (e) { return DEFAULT_FONT; }
+  });
+  const [mode, setMode] = useState(() => {
+    try { return localStorage.getItem("freya-mode") || DEFAULT_MODE; }
+    catch (e) { return DEFAULT_MODE; }
+  });
+  const handleSetColor = (k) => {
+    setColorKey(k);
+    try { localStorage.setItem("freya-color", k); } catch (e) {}
   };
-  const theme = THEMES[themeKey] || THEMES[DEFAULT_THEME];
+  const handleSetFont = (k) => {
+    setFontKey(k);
+    try { localStorage.setItem("freya-font", k); } catch (e) {}
+  };
+  const handleSetMode = (m) => {
+    setMode(m);
+    try { localStorage.setItem("freya-mode", m); } catch (e) {}
+  };
   const changePage = (p) => {
     setPage(p);
     setFadeKey(k => k + 1);
@@ -1108,11 +1339,15 @@ export default function Portfolio() {
   };
   return (
     <>
-      <style>{buildFontsCSS(theme)}</style>
+      <style>{buildFontsCSS(colorKey, fontKey, mode)}</style>
       <Page>
         <Navbar activePage={page} setPage={changePage} />
         <div key={fadeKey} style={{ animation: "scaleIn 0.3s ease-out" }}>{render()}</div>
-        <ThemeSwitcher activeTheme={themeKey} setTheme={handleSetTheme} />
+        <DesignPanel
+          colorKey={colorKey} setColor={handleSetColor}
+          fontKey={fontKey} setFont={handleSetFont}
+          mode={mode} setMode={handleSetMode}
+        />
       </Page>
     </>
   );
