@@ -238,7 +238,6 @@ function useReveal(deps = []) {
     const nodes = document.querySelectorAll(".reveal:not(.visible)");
     nodes.forEach(el => observer.observe(el));
     return () => observer.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 }
 // Skill → where I used it (for flip card backs)
