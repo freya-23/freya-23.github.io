@@ -110,8 +110,8 @@ const FONT_THEMES = {
     letterSpacing: "-0.035em",
   },
 };
-const DEFAULT_COLOR = "vibrant";
-const DEFAULT_FONT = "editorial";
+const DEFAULT_COLOR = "jewel";
+const DEFAULT_FONT = "devEditorial";
 const DEFAULT_MODE = "light";
 const buildFontsCSS = (colorKey, fontKey, mode) => {
   const t = COLOR_THEMES[colorKey][mode];
@@ -161,6 +161,14 @@ const buildFontsCSS = (colorKey, fontKey, mode) => {
     from { opacity: 0; transform: translateX(-12px); }
     to { opacity: 1; transform: translateX(0); }
   }
+  @keyframes flipIn {
+    from { opacity: 0; transform: rotateY(-90deg); }
+    to { opacity: 1; transform: rotateY(0deg); }
+  }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+    50% { box-shadow: 0 0 24px 2px var(--accent); }
+  }
   .fade-up { animation: fadeUp 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
   .stagger-1 { animation-delay: 0.05s; opacity: 0; }
   .stagger-2 { animation-delay: 0.15s; opacity: 0; }
@@ -168,7 +176,106 @@ const buildFontsCSS = (colorKey, fontKey, mode) => {
   .stagger-4 { animation-delay: 0.35s; opacity: 0; }
   .stagger-5 { animation-delay: 0.45s; opacity: 0; }
   .stagger-6 { animation-delay: 0.55s; opacity: 0; }
+  /* Scroll-reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.08s; }
+  .reveal-delay-2 { transition-delay: 0.16s; }
+  .reveal-delay-3 { transition-delay: 0.24s; }
+  .reveal-delay-4 { transition-delay: 0.32s; }
+  .reveal-delay-5 { transition-delay: 0.4s; }
+  /* Hover lift utility */
+  .hover-lift {
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+    will-change: transform;
+  }
+  .hover-lift:hover {
+    transform: translateY(-3px);
+  }
+  /* Flip card 3D */
+  .flip-card { perspective: 1000px; }
+  .flip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+  .flip-card.flipped .flip-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-face {
+    position: absolute;
+    inset: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: inherit;
+  }
+  .flip-back {
+    transform: rotateY(180deg);
+  }
 `;
+};
+// ─── SCROLL REVEAL HOOK ─────────────────────────────────
+function useReveal(deps = []) {
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    const nodes = document.querySelectorAll(".reveal:not(.visible)");
+    nodes.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+}
+// Skill → where I used it (for flip card backs)
+const SKILL_CONTEXT = {
+  "Python": "ECRIE · Phoenix · Alzheimer's · NIDS · Pay Gap pipeline",
+  "SQL": "TEAM PMC dashboards · Sales Forecasting · Graph Pipeline joins",
+  "PostgreSQL": "TEAM PMC ETL · taxi data warehousing",
+  "MySQL": "Book Recommender backend · academic coursework",
+  "Snowflake": "Certified · cloud data warehousing coursework",
+  "R": "Statistics for Data Analysts · time-series coursework",
+  "C": "Operating Systems · DSA coursework",
+  "C#": "2D Flappy Bird · Unity game dev",
+  "Pandas": "ECRIE feature engineering · Phoenix analysis · NIDS prep",
+  "Scikit-learn": "NIDS Random Forest · Alzheimer's XGBoost · Sales Forecasting",
+  "NumPy": "Image enhancement research · ML preprocessing across projects",
+  "XGBoost": "Alzheimer's 90.9% accuracy · ECRIE stock prediction ensemble",
+  "SHAP": "Alzheimer's explainability · ECRIE feature importance",
+  "LIME": "Alzheimer's local explanations · image enhancement research",
+  "Statistical Modeling": "DA-IICT PSNR/SSIM benchmarking · coursework",
+  "A/B Testing": "ISSC event promotion — drove 15% turnout lift",
+  "ARIMA": "Sales Forecasting time-series modeling",
+  "FinBERT": "ECRIE earnings call sentiment across 117 tickers",
+  "Tableau": "TEAM PMC dashboards — 60% reporting reduction",
+  "Power BI": "Cross-training with Tableau · viz coursework",
+  "Matplotlib": "Phoenix income distribution · ECRIE SHAP plots",
+  "Seaborn": "Statistical visualization across academic work",
+  "D3.js": "Gender & Race Pay Gap scrollytelling web app",
+  "Microsoft Excel": "TEAM PMC data consolidation · PivotTables + Power Query",
+  "Git": "Version control for all 8+ portfolio projects",
+  "Docker": "Neo4j containerization · reproducible research environments",
+  "Neo4j": "Real-Time Graph Pipeline · NYC Taxi graph modeling",
+  "Kafka": "Graph Pipeline streaming — ~150 msgs/sec",
+  "Kubernetes": "Graph Pipeline orchestration · auto-scaling pods",
+  "LangGraph": "ECRIE three-phase agentic architecture",
+  "QGIS": "Phoenix Food Access — buffer + spatial join analysis",
+  "Google Analytics": "Certified · event analytics integration",
+  "Jupyter": "Exploratory analysis across ECRIE, Phoenix, NIDS",
 };
 // ─── DATA ─────────────────────────────────────────────────
 const PROJECTS = [
@@ -1016,14 +1123,15 @@ function ProjectCard({ proj, index, isOpen, onToggle }) {
 }
 function ProjectsPage() {
   const [openIndex, setOpenIndex] = useState(null);
+  useReveal([openIndex]);
   const toggle = (i) => setOpenIndex(prev => prev === i ? null : i);
   return (
     <div style={{ minHeight: "100vh", padding: "140px 48px 80px", maxWidth: "1000px", margin: "0 auto" }}>
       <div className="fade-up stagger-1"><SectionLabel number="02" text="Projects" /></div>
       <h2 className="fade-up stagger-2" style={{
-        fontFamily: "var(--font-heading)", fontWeight: 500,
+        fontFamily: "var(--font-heading)", fontWeight: "var(--heading-weight)",
         fontSize: "clamp(2.2rem, 5vw, 3.2rem)", lineHeight: 1.12,
-        marginBottom: "18px", letterSpacing: "-0.02em", color: "var(--text)",
+        marginBottom: "18px", letterSpacing: "var(--heading-tracking)", color: "var(--text)",
       }}>
         Things I've <span style={{ fontStyle: "italic", color: "var(--accent)" }}>built</span>.
       </h2>
@@ -1034,62 +1142,229 @@ function ProjectsPage() {
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
         {PROJECTS.map((proj, i) => (
-          <ProjectCard
-            key={i}
-            proj={proj}
-            index={i}
-            isOpen={openIndex === i}
-            onToggle={() => toggle(i)}
-          />
+          <div key={i} className={`reveal reveal-delay-${Math.min(i % 5 + 1, 5)}`}>
+            <ProjectCard
+              proj={proj}
+              index={i}
+              isOpen={openIndex === i}
+              onToggle={() => toggle(i)}
+            />
+          </div>
         ))}
       </div>
     </div>
   );
 }
 // ─── SKILLS ───────────────────────────────────────────────
-function SkillsPage() {
-  const levelDot = (level) => {
-    if (level === "Advanced") return { bg: "var(--accent)", size: "7px" };
-    if (level === "Intermediate") return { bg: "var(--accent-soft)", size: "7px" };
-    return { bg: "var(--rule)", size: "7px" };
-  };
-  const categories = Object.entries(SKILLS);
+function SkillCard({ skill, context, catColor }) {
+  const [flipped, setFlipped] = useState(false);
+  const levelBg = skill.level === "Advanced" ? "var(--accent)" : "var(--accent-soft)";
   return (
-    <div style={{ minHeight: "100vh", padding: "140px 48px 80px", maxWidth: "1000px", margin: "0 auto" }}>
+    <div
+      className={`flip-card hover-lift ${flipped ? "flipped" : ""}`}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
+      onClick={() => setFlipped(f => !f)}
+      style={{
+        width: "100%", height: "84px",
+        cursor: "pointer",
+      }}
+    >
+      <div className="flip-inner">
+        {/* FRONT */}
+        <div
+          className="flip-face"
+          style={{
+            background: "var(--card)",
+            border: "1px solid var(--rule)",
+            borderRadius: "12px",
+            padding: "14px 16px",
+            display: "flex", flexDirection: "column",
+            justifyContent: "space-between",
+            transition: "border-color 0.2s ease",
+          }}
+        >
+          <div style={{
+            display: "flex", alignItems: "center", gap: "8px",
+          }}>
+            <span style={{
+              display: "inline-block", width: "7px", height: "7px", borderRadius: "50%",
+              background: levelBg, flexShrink: 0,
+            }} />
+            <span style={{
+              fontFamily: "var(--font-heading)", fontWeight: "var(--heading-weight)",
+              fontSize: "0.95rem", color: "var(--text)",
+            }}>{skill.name}</span>
+          </div>
+          <div style={{
+            fontSize: "0.68rem", color: "var(--muted)",
+            letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 500,
+          }}>
+            {skill.level} · hover for context
+          </div>
+        </div>
+        {/* BACK */}
+        <div
+          className="flip-face flip-back"
+          style={{
+            background: "var(--accent)",
+            color: "var(--bg)",
+            border: "1px solid var(--accent)",
+            borderRadius: "12px",
+            padding: "14px 16px",
+            display: "flex", flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <div style={{
+            fontSize: "0.66rem",
+            letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 600,
+            opacity: 0.8, marginBottom: "4px",
+          }}>
+            Used in
+          </div>
+          <div style={{
+            fontSize: "0.82rem", lineHeight: 1.4, fontWeight: 500,
+          }}>
+            {context || "Academic & project work"}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+function SkillsPage() {
+  useReveal([]);
+  const categoryKeys = ["All", ...Object.keys(SKILLS)];
+  const [activeTab, setActiveTab] = useState("All");
+  const [filter, setFilter] = useState("All");
+  const colors = ["var(--accent)", "var(--accent-soft)"];
+  // Flatten for filter, or group if specific tab
+  const buildDisplay = () => {
+    if (activeTab === "All") {
+      return Object.entries(SKILLS).map(([cat, skills]) => [
+        cat,
+        skills.filter(s => filter === "All" || s.level === filter),
+      ]).filter(([, skills]) => skills.length > 0);
+    }
+    return [[
+      activeTab,
+      SKILLS[activeTab].filter(s => filter === "All" || s.level === filter),
+    ]].filter(([, skills]) => skills.length > 0);
+  };
+  const display = buildDisplay();
+  // Totals for filter badges
+  const allSkills = Object.values(SKILLS).flat();
+  const advCount = allSkills.filter(s => s.level === "Advanced").length;
+  const intCount = allSkills.filter(s => s.level === "Intermediate").length;
+  return (
+    <div style={{ minHeight: "100vh", padding: "140px 48px 80px", maxWidth: "1100px", margin: "0 auto" }}>
       <div className="fade-up stagger-1"><SectionLabel number="03" text="Skills" /></div>
       <h2 className="fade-up stagger-2" style={{
-        fontFamily: "var(--font-heading)", fontWeight: 500,
+        fontFamily: "var(--font-heading)", fontWeight: "var(--heading-weight)",
         fontSize: "clamp(2.2rem, 5vw, 3.2rem)", lineHeight: 1.12,
-        marginBottom: "18px", letterSpacing: "-0.02em", color: "var(--text)",
+        marginBottom: "18px", letterSpacing: "var(--heading-tracking)", color: "var(--text)",
       }}>
         My <span style={{ fontStyle: "italic", color: "var(--accent)" }}>toolkit</span>.
       </h2>
-      <div className="fade-up stagger-3" style={{
-        fontSize: "1rem", color: "var(--muted)", marginBottom: "40px", maxWidth: "600px", lineHeight: 1.6,
-        display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap",
+      <p className="fade-up stagger-3" style={{
+        fontSize: "1rem", color: "var(--muted)", marginBottom: "30px", maxWidth: "640px", lineHeight: 1.6,
       }}>
-        <span>Grouped by what I use them for.</span>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", marginLeft: "14px" }}>
-          <span style={{ display: "inline-block", width: "7px", height: "7px", borderRadius: "50%", background: "var(--accent)" }} />
-          <span style={{ fontSize: "0.85rem", color: "var(--text)" }}>Advanced</span>
-        </span>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", marginLeft: "14px" }}>
-          <span style={{ display: "inline-block", width: "7px", height: "7px", borderRadius: "50%", background: "var(--accent-soft)" }} />
-          <span style={{ fontSize: "0.85rem", color: "var(--text)" }}>Intermediate</span>
-        </span>
+        Hover or tap any skill to see where I've actually used it. Filter by category or proficiency.
+      </p>
+      {/* CATEGORY TABS */}
+      <div className="fade-up stagger-3" style={{
+        display: "flex", gap: "6px", flexWrap: "wrap",
+        marginBottom: "14px",
+      }}>
+        {categoryKeys.map((cat) => {
+          const active = activeTab === cat;
+          const count = cat === "All"
+            ? allSkills.length
+            : SKILLS[cat].length;
+          return (
+            <button
+              key={cat}
+              onClick={() => setActiveTab(cat)}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "8px",
+                background: active ? "var(--accent)" : "transparent",
+                color: active ? "var(--bg)" : "var(--text)",
+                border: `1px solid ${active ? "var(--accent)" : "var(--rule)"}`,
+                padding: "8px 16px", borderRadius: "100px",
+                fontSize: "0.82rem", fontWeight: 500,
+                fontFamily: "var(--font-body)",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={e => { if (!active) e.currentTarget.style.borderColor = "var(--accent)"; }}
+              onMouseLeave={e => { if (!active) e.currentTarget.style.borderColor = "var(--rule)"; }}
+            >
+              {cat}
+              <span style={{
+                fontSize: "0.7rem",
+                opacity: active ? 0.8 : 0.6,
+                fontWeight: 600,
+              }}>{count}</span>
+            </button>
+          );
+        })}
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: "44px" }}>
-        {categories.map(([cat, skills], ci) => (
-          <div key={cat} className={`fade-up stagger-${Math.min(ci + 3, 6)}`}>
+      {/* LEVEL FILTER */}
+      <div className="fade-up stagger-4" style={{
+        display: "flex", gap: "6px", marginBottom: "40px", flexWrap: "wrap",
+        alignItems: "center",
+      }}>
+        <span style={{
+          fontSize: "0.7rem", color: "var(--muted)", fontWeight: 600,
+          letterSpacing: "0.14em", textTransform: "uppercase", marginRight: "6px",
+        }}>Filter</span>
+        {[
+          { key: "All", label: "All levels", count: allSkills.length, dot: null },
+          { key: "Advanced", label: "Advanced", count: advCount, dot: "var(--accent)" },
+          { key: "Intermediate", label: "Intermediate", count: intCount, dot: "var(--accent-soft)" },
+        ].map(f => {
+          const active = filter === f.key;
+          return (
+            <button
+              key={f.key}
+              onClick={() => setFilter(f.key)}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "8px",
+                background: active ? "var(--bg-soft)" : "transparent",
+                color: "var(--text)",
+                border: `1px solid ${active ? "var(--accent)" : "var(--rule)"}`,
+                padding: "6px 14px", borderRadius: "100px",
+                fontSize: "0.78rem", fontWeight: 500,
+                fontFamily: "var(--font-body)",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {f.dot && (
+                <span style={{
+                  display: "inline-block", width: "7px", height: "7px", borderRadius: "50%",
+                  background: f.dot,
+                }} />
+              )}
+              {f.label} <span style={{ opacity: 0.55 }}>({f.count})</span>
+            </button>
+          );
+        })}
+      </div>
+      {/* SKILL GRID BY CATEGORY */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+        {display.map(([cat, skills], ci) => (
+          <div key={cat} className={`reveal reveal-delay-${Math.min(ci + 1, 5)}`}>
             <div style={{
-              display: "flex", alignItems: "baseline", gap: "18px",
+              display: "flex", alignItems: "baseline", gap: "14px",
               marginBottom: "18px",
               paddingBottom: "12px",
               borderBottom: "1px solid var(--rule)",
             }}>
               <h3 style={{
-                fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.15rem",
-                color: "var(--text)", letterSpacing: "-0.005em",
+                fontFamily: "var(--font-heading)", fontWeight: "var(--heading-weight)",
+                fontSize: "1.15rem", color: "var(--text)", letterSpacing: "-0.005em",
               }}>{cat}</h3>
               <span style={{
                 fontSize: "0.72rem", color: "var(--muted)", fontWeight: 500,
@@ -1098,51 +1373,45 @@ function SkillsPage() {
                 {skills.length} {skills.length === 1 ? "tool" : "tools"}
               </span>
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-              {skills.map((skill) => {
-                const dot = levelDot(skill.level);
-                return (
-                  <span key={skill.name} style={{
-                    display: "inline-flex", alignItems: "center", gap: "8px",
-                    background: "var(--card)",
-                    border: "1px solid var(--rule)",
-                    padding: "8px 16px", borderRadius: "100px",
-                    fontSize: "0.85rem", fontWeight: 500, color: "var(--text)",
-                    transition: "all 0.2s ease", cursor: "default",
-                  }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.borderColor = "var(--accent)";
-                      e.currentTarget.style.background = "var(--bg-soft)";
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.borderColor = "var(--rule)";
-                      e.currentTarget.style.background = "var(--card)";
-                    }}
-                  >
-                    <span style={{
-                      display: "inline-block", width: dot.size, height: dot.size, borderRadius: "50%",
-                      background: dot.bg, flexShrink: 0,
-                    }} />
-                    {skill.name}
-                  </span>
-                );
-              })}
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+              gap: "10px",
+            }}>
+              {skills.map((skill) => (
+                <SkillCard
+                  key={`${cat}-${skill.name}`}
+                  skill={skill}
+                  context={SKILL_CONTEXT[skill.name]}
+                />
+              ))}
             </div>
           </div>
         ))}
+        {display.length === 0 && (
+          <div style={{
+            padding: "40px", textAlign: "center",
+            background: "var(--card)", border: "1px solid var(--rule)",
+            borderRadius: "12px",
+            color: "var(--muted)", fontSize: "0.9rem",
+          }}>
+            No skills match the current filter. Try clearing it.
+          </div>
+        )}
       </div>
     </div>
   );
 }
 // ─── EXPERIENCE ───────────────────────────────────────────
 function ExperiencePage() {
+  useReveal([]);
   return (
     <div style={{ minHeight: "100vh", padding: "140px 48px 80px", maxWidth: "1000px", margin: "0 auto" }}>
       <div className="fade-up stagger-1"><SectionLabel number="04" text="Experience" /></div>
       <h2 className="fade-up stagger-2" style={{
-        fontFamily: "var(--font-heading)", fontWeight: 500,
+        fontFamily: "var(--font-heading)", fontWeight: "var(--heading-weight)",
         fontSize: "clamp(2.2rem, 5vw, 3.2rem)", lineHeight: 1.12,
-        marginBottom: "56px", letterSpacing: "-0.02em", color: "var(--text)",
+        marginBottom: "56px", letterSpacing: "var(--heading-tracking)", color: "var(--text)",
       }}>
         Where I've <span style={{ fontStyle: "italic", color: "var(--accent)" }}>worked</span>.
       </h2>
@@ -1152,7 +1421,7 @@ function ExperiencePage() {
           width: "1px", background: "var(--rule)",
         }} />
         {EXPERIENCE.map((exp, i) => (
-          <div key={i} className={`fade-up stagger-${Math.min(i + 2, 6)}`} style={{
+          <div key={i} className={`reveal reveal-delay-${Math.min(i + 1, 5)}`} style={{
             display: "flex", gap: "32px", marginBottom: "36px", position: "relative",
           }}>
             <div style={{
@@ -1163,15 +1432,15 @@ function ExperiencePage() {
                 width: "15px", height: "15px", borderRadius: "50%",
                 background: i === 0 ? "var(--accent)" : "var(--bg)",
                 border: `2px solid var(--accent)`,
+                boxShadow: i === 0 ? "0 0 0 4px var(--bg-soft)" : "none",
               }} />
             </div>
-            <div style={{
+            <div className="hover-lift" style={{
               flex: 1, background: "var(--card)", borderRadius: "14px",
               padding: "26px 28px", border: "1px solid var(--rule)",
-              transition: "border-color 0.2s ease",
             }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = "var(--accent)"}
-              onMouseLeave={e => e.currentTarget.style.borderColor = "var(--rule)"}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.06)"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--rule)"; e.currentTarget.style.boxShadow = "none"; }}
             >
               <div style={{
                 display: "flex", justifyContent: "space-between", alignItems: "flex-start",
@@ -1179,7 +1448,8 @@ function ExperiencePage() {
               }}>
                 <div>
                   <h3 style={{
-                    fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.2rem",
+                    fontFamily: "var(--font-heading)", fontWeight: "var(--heading-weight)",
+                    fontSize: "1.2rem",
                     color: "var(--text)", letterSpacing: "-0.005em",
                   }}>{exp.role}</h3>
                   <div style={{
