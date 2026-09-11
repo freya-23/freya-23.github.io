@@ -95,7 +95,7 @@ const FONT_THEMES = {
     heading: "'IBM Plex Serif', serif",
     body: "'IBM Plex Mono', monospace",
     import: "family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400",
-    headingWeight: 600,
+    headingWeight: 700,
     headingStyle: "normal",
     letterSpacing: "-0.01em",
   },
@@ -257,22 +257,24 @@ const SKILL_CONTEXT = {
   "SHAP": "Alzheimer's explainability · ECRIE feature importance",
   "LIME": "Alzheimer's local explanations · image enhancement research",
   "Statistical Modeling": "DA-IICT PSNR/SSIM benchmarking · coursework",
-  "A/B Testing": "ISSC event promotion — drove 15% turnout lift",
+  "A/B Testing": "ISSC event promotion, drove 15% turnout lift",
   "ARIMA": "Sales Forecasting time-series modeling",
   "FinBERT": "ECRIE earnings call sentiment across 117 tickers",
-  "Tableau": "TEAM PMC dashboards — 60% reporting reduction",
+  "Tableau": "TEAM PMC dashboards, 60% reporting reduction",
   "Power BI": "Cross-training with Tableau · viz coursework",
   "Matplotlib": "Phoenix income distribution · ECRIE SHAP plots",
   "Seaborn": "Statistical visualization across academic work",
   "D3.js": "Gender & Race Pay Gap scrollytelling web app",
+  "React": "Built and maintain this portfolio site end to end",
+  "JavaScript": "Portfolio interactivity · Pay Gap scrollytelling app",
   "Microsoft Excel": "TEAM PMC data consolidation · PivotTables + Power Query",
   "Git": "Version control for all 8+ portfolio projects",
   "Docker": "Neo4j containerization · reproducible research environments",
   "Neo4j": "Real-Time Graph Pipeline · NYC Taxi graph modeling",
-  "Kafka": "Graph Pipeline streaming — ~150 msgs/sec",
+  "Kafka": "Graph Pipeline streaming, ~150 msgs/sec",
   "Kubernetes": "Graph Pipeline orchestration · auto-scaling pods",
   "LangGraph": "ECRIE three-phase agentic architecture",
-  "QGIS": "Phoenix Food Access — buffer + spatial join analysis",
+  "QGIS": "Phoenix Food Access, buffer + spatial join analysis",
   "Google Analytics": "Certified · event analytics integration",
   "Jupyter": "Exploratory analysis across ECRIE, Phoenix, NIDS",
 };
@@ -282,8 +284,8 @@ const PROJECTS = [
     title: "Phoenix Food Access Inequity Analysis",
     period: "Apr 2026",
     tagline: "Mapping grocery access vs income across 1,009 Phoenix neighborhoods.",
-    summary: "A spatial analysis quantifying food access inequity in Maricopa County using QGIS, Python, and public USDA/Census data — revealing food desert neighborhoods earn 39% less and face 2.5× higher poverty rates than served ones.",
-    description: "Phoenix has a food desert problem that doesn't always show up on income maps alone. This project combined grocery store locations from OpenStreetMap, census tract boundaries from US Census TIGER, and USDA's official Low-Income Low-Access classifications to quantify who actually struggles to reach a grocery store. In QGIS, I reprojected all layers to UTM Zone 12N for accurate meter-based distance operations, built 1-mile walking buffers around every grocery store, and spatial-joined those buffers against 1,009 Maricopa census tracts to flag neighborhoods falling outside every buffer. I then joined USDA income and poverty data to each tract via zero-padded GEOIDs, and did the statistical comparison in Python. The final output is a choropleth map showing income-graduated tracts with food desert boundaries overlaid, plus supporting matplotlib charts and a summary table. The key finding challenges the rural food desert stereotype: 97% of Maricopa food deserts are urban — 358,946 residents in Phoenix proper lack walkable grocery access.",
+    summary: "A spatial analysis quantifying food access inequity in Maricopa County using QGIS, Python, and public USDA/Census data, revealing food desert neighborhoods earn 39% less and face 2.5× higher poverty rates than served ones.",
+    description: "Phoenix has a food desert problem that doesn't always show up on income maps alone. This project combined grocery store locations from OpenStreetMap, census tract boundaries from US Census TIGER, and USDA's official Low-Income Low-Access classifications to quantify who actually struggles to reach a grocery store. In QGIS, I reprojected all layers to UTM Zone 12N for accurate meter-based distance operations, built 1-mile walking buffers around every grocery store, and spatial-joined those buffers against 1,009 Maricopa census tracts to flag neighborhoods falling outside every buffer. I then joined USDA income and poverty data to each tract via zero-padded GEOIDs, and did the statistical comparison in Python. The final output is a choropleth map showing income-graduated tracts with food desert boundaries overlaid, plus supporting matplotlib charts and a summary table. The key finding challenges the rural food desert stereotype: 97% of Maricopa food deserts are urban, and 358,946 residents in Phoenix proper lack walkable grocery access.",
     highlights: [
       { label: "Tracts Analyzed", value: "1,009" },
       { label: "Income Gap", value: "39% lower" },
@@ -298,7 +300,7 @@ const PROJECTS = [
     period: "Jan 2026 – May 2026",
     tagline: "Agentic AI pipeline turning earnings calls into trading signals.",
     summary: "MS capstone: a three-phase agentic AI system that scrapes 900+ real earnings call transcripts, extracts sentiment with FinBERT, and predicts post-earnings stock movement via XGBoost with SHAP-based interpretability.",
-    description: "ECRIE is my ASU MS capstone. The system ingests earnings call transcripts from SeekingAlpha for 117 S&P 500 tickers — over 900 real transcripts, no synthetic data — cleans and segments speaker turns, and runs FinBERT sentiment analysis on each segment. On top of that sits a three-phase agentic architecture orchestrated with LangGraph: (1) a feature-discovery agent that proposes candidate predictive signals, (2) a self-learning optimizer that tunes feature weighting across iterations, and (3) an XGBoost ensemble that predicts post-earnings stock direction. The sentiment classifier AUC improved to ~65% through iterative prompt engineering and segment-level features. SHAP feature importance surfaces which financial and linguistic drivers are moving predictions — critical for any investor-facing deployment. The project pushed me to integrate NLP, ML, and agentic orchestration end-to-end while working with real, messy financial data.",
+    description: "ECRIE is my ASU MS capstone. The system ingests earnings call transcripts from SeekingAlpha for 117 S&P 500 tickers (over 900 real transcripts, no synthetic data), cleans and segments speaker turns, and runs FinBERT sentiment analysis on each segment. On top of that sits a three-phase agentic architecture orchestrated with LangGraph: (1) a feature-discovery agent that proposes candidate predictive signals, (2) a self-learning optimizer that tunes feature weighting across iterations, and (3) an XGBoost ensemble that predicts post-earnings stock direction. The sentiment classifier AUC improved to ~65% through iterative prompt engineering and segment-level features. SHAP feature importance surfaces which financial and linguistic drivers are moving predictions, which matters for any investor-facing deployment. The project pushed me to integrate NLP, ML, and agentic orchestration end-to-end while working with real, messy financial data.",
     highlights: [
       { label: "Transcripts", value: "900+ real" },
       { label: "Tickers Covered", value: "117 S&P 500" },
@@ -309,7 +311,7 @@ const PROJECTS = [
   {
     title: "Scalable Real-Time Graph Analytics Pipeline",
     period: "Jan 2025 – May 2025",
-    tagline: "From NYC taxis to real-time streaming graphs — built at scale.",
+    tagline: "From NYC taxis to real-time streaming graphs, built at scale.",
     summary: "A two-phase graph analytics system that processes NYC taxi data through Neo4j and scales to real-time streaming with Kafka and Kubernetes.",
     description: "This project tackled the challenge of analyzing massive transportation networks in real time. In Phase 1, I ingested NYC Yellow Taxi trip data into a Dockerized Neo4j instance and ran graph algorithms like PageRank (to identify the most connected pickup/drop-off zones) and BFS (to trace shortest routes through the trip network). Phase 2 was the real engineering challenge: I extended the batch system into a fully real-time streaming pipeline using Apache Kafka and Kubernetes. I configured Kafka Connect source connectors to stream filtered trip records directly into Neo4j, achieving ~150 messages/second throughput with sub-200ms end-to-end latency. The entire pipeline was orchestrated via Kubernetes pods for auto-scaling and fault tolerance. Validated results with automated integration tests and live graph visualizations.",
     highlights: [
@@ -324,7 +326,7 @@ const PROJECTS = [
     period: "Aug 2024 – Dec 2024",
     tagline: "Scroll-driven storytelling that makes inequality visible.",
     summary: "A full-stack scrollytelling web app using D3.js to communicate complex wage disparity patterns through narrative-driven, interactive visualizations.",
-    description: "Working in a team of six, I built an argumentative, scroll-driven data narrative that explores the gender and racial dimensions of the wage gap in the United States. The application uses D3.js extensively — from animated bar charts that reveal pay ratios across demographics, to custom-built visualization idioms like slope graphs and bump charts showing how disparities shift over time and across industries. The scroll-triggered architecture uses Intersection Observer to progressively reveal data points as the user scrolls, creating a cinematic storytelling experience. Each section builds on the last: starting with the overall gap, drilling into racial breakdowns, comparing industries, and ending with a call to action. I handled the full pipeline from raw Census Bureau data wrangling to front-end deployment.",
+    description: "Working in a team of six, I built an argumentative, scroll-driven data narrative that explores the gender and racial dimensions of the wage gap in the United States. The application uses D3.js extensively, from animated bar charts that reveal pay ratios across demographics, to custom-built visualization idioms like slope graphs and bump charts showing how disparities shift over time and across industries. The scroll-triggered architecture uses Intersection Observer to progressively reveal data points as the user scrolls, creating a cinematic storytelling experience. Each section builds on the last: starting with the overall gap, drilling into racial breakdowns, comparing industries, and ending with a call to action. I handled the full pipeline from raw Census Bureau data wrangling to front-end deployment.",
     highlights: [
       { label: "Team Size", value: "6 people" },
       { label: "Viz Library", value: "D3.js" },
@@ -335,9 +337,9 @@ const PROJECTS = [
   {
     title: "Network Intrusion Detection System",
     period: "Aug 2024 – Dec 2024",
-    tagline: "99.77% accuracy — catching threats before they land.",
+    tagline: "99.77% accuracy, catching threats before they land.",
     summary: "Comprehensive research paper analyzing ML/DL models for cybersecurity threat detection on benchmark intrusion datasets.",
-    description: "This was a deep-dive research project into how machine learning can power next-generation cybersecurity. I wrote an extensive paper evaluating multiple ML and deep learning models — including Random Forest, XGBoost, CNNs, and LSTMs — on two major benchmark datasets: NSL-KDD and CIC-IDS2017. The best-performing model (Random Forest with engineered features) achieved 99.77% accuracy in classifying network traffic as normal vs. malicious across multiple attack categories (DoS, Probe, R2L, U2R). A significant challenge was handling extreme class imbalance: some attack types made up less than 0.1% of the dataset. I addressed this through SMOTE oversampling, feature selection via mutual information, and stratified cross-validation. The paper also discusses real-time deployment challenges — how to maintain detection accuracy under live traffic loads while keeping false positive rates low enough for production use.",
+    description: "This was a deep-dive research project into how machine learning can power next-generation cybersecurity. I wrote an extensive paper evaluating multiple ML and deep learning models, including Random Forest, XGBoost, CNNs, and LSTMs, on two major benchmark datasets: NSL-KDD and CIC-IDS2017. The best-performing model (Random Forest with engineered features) achieved 99.77% accuracy in classifying network traffic as normal vs. malicious across multiple attack categories (DoS, Probe, R2L, U2R). A significant challenge was handling extreme class imbalance: some attack types made up less than 0.1% of the dataset. I addressed this through SMOTE oversampling, feature selection via mutual information, and stratified cross-validation. The paper also discusses real-time deployment challenges: how to maintain detection accuracy under live traffic loads while keeping false positive rates low enough for production use.",
     highlights: [
       { label: "Best Accuracy", value: "99.77%" },
       { label: "Datasets", value: "NSL-KDD & CIC-IDS2017" },
@@ -350,7 +352,7 @@ const PROJECTS = [
     period: "Jan 2025 – May 2025",
     tagline: "Interpretable ML for responsible early diagnosis.",
     summary: "Built an interpretable ML pipeline using XGBoost with SHAP and LIME explanations, designed to be fair across demographic groups.",
-    description: "Healthcare ML comes with unique responsibilities — the model needs to be not just accurate, but explainable and fair. This project built an end-to-end pipeline for predicting Alzheimer's disease risk from patient health records. I trained an XGBoost classifier that achieved 90.9% accuracy, then layered on SHAP (SHapley Additive exPlanations) for global feature importance and LIME (Local Interpretable Model-agnostic Explanations) for individual prediction explanations. This means a clinician could see not just \"high risk\" but exactly which factors (age, cognitive test scores, biomarkers) drove that prediction. Crucially, I also conducted fairness audits across age groups, gender, and ethnicity to ensure the model didn't systematically underperform for any demographic — a common pitfall in medical AI that can reinforce existing healthcare disparities.",
+    description: "Healthcare ML comes with unique responsibilities. The model needs to be not just accurate, but explainable and fair. This project built an end-to-end pipeline for predicting Alzheimer's disease risk from patient health records. I trained an XGBoost classifier that achieved 90.9% accuracy, then layered on SHAP (SHapley Additive exPlanations) for global feature importance and LIME (Local Interpretable Model-agnostic Explanations) for individual prediction explanations. This means a clinician could see not just \"high risk\" but exactly which factors (age, cognitive test scores, biomarkers) drove that prediction. Crucially, I also conducted fairness audits across age groups, gender, and ethnicity to ensure the model didn't systematically underperform for any demographic, a common pitfall in medical AI that can reinforce existing healthcare disparities.",
     highlights: [
       { label: "Accuracy", value: "90.9%" },
       { label: "Explainability", value: "SHAP + LIME" },
@@ -363,7 +365,7 @@ const PROJECTS = [
     period: "Aug 2023 – Dec 2023",
     tagline: "35% engagement boost through smarter recommendations.",
     summary: "A personalized recommendation engine using Bayesian Personalized Ranking and collaborative filtering with implicit user feedback.",
-    description: "Most recommendation systems rely on explicit ratings (1-5 stars), but real user behavior is messier — people browse, click, abandon, and revisit. This project built a recommendation engine that learns from implicit feedback signals: which books a user viewed, how long they spent on a page, and what they added to wishlists. The core algorithm uses Bayesian Personalized Ranking (BPR), which optimizes a pairwise ranking loss — essentially learning that a user prefers Book A over Book B based on interaction patterns, even without explicit ratings. I combined this with collaborative filtering to leverage similar users' behavior. The system achieved a 35% increase in user engagement metrics compared to a popularity-based baseline, measured through click-through rates and session duration on recommended items.",
+    description: "Most recommendation systems rely on explicit ratings (1-5 stars), but real user behavior is messier: people browse, click, abandon, and revisit. This project built a recommendation engine that learns from implicit feedback signals: which books a user viewed, how long they spent on a page, and what they added to wishlists. The core algorithm uses Bayesian Personalized Ranking (BPR), which optimizes a pairwise ranking loss, essentially learning that a user prefers Book A over Book B based on interaction patterns, even without explicit ratings. I combined this with collaborative filtering to leverage similar users' behavior. The system achieved a 35% increase in user engagement metrics compared to a popularity-based baseline, measured through click-through rates and session duration on recommended items.",
     highlights: [
       { label: "Engagement Lift", value: "+35%" },
       { label: "Algorithm", value: "BPR + Collab Filtering" },
@@ -376,13 +378,50 @@ const PROJECTS = [
     period: "Jan 2023 – May 2023",
     tagline: "Predicting revenue with 40% more efficient pipelines.",
     summary: "Implemented multiple supervised ML algorithms for predictive sales analysis, with a focus on robust data preprocessing and model comparison.",
-    description: "This project focused on the practical side of ML in business: building a sales forecasting pipeline that's reliable enough for real decision-making. I implemented and compared three approaches — Linear Regression (as a baseline), Ridge Regression (for handling multicollinearity in correlated sales features), and ARIMA (for capturing temporal patterns and seasonality). The biggest wins came from the data preprocessing stage: I built automated pipelines for handling missing values, encoding categorical features (product categories, regions, store types), and engineering time-based features (day-of-week effects, holiday indicators, rolling averages). This preprocessing automation alone improved efficiency by 40% compared to manual approaches. The final ensemble of models enabled accurate multi-step-ahead forecasting that the business team could use for inventory planning and revenue projections.",
+    description: "This project focused on the practical side of ML in business: building a sales forecasting pipeline that's reliable enough for real decision-making. I implemented and compared three approaches: Linear Regression (as a baseline), Ridge Regression (for handling multicollinearity in correlated sales features), and ARIMA (for capturing temporal patterns and seasonality). The biggest wins came from the data preprocessing stage: I built automated pipelines for handling missing values, encoding categorical features (product categories, regions, store types), and engineering time-based features (day-of-week effects, holiday indicators, rolling averages). This preprocessing automation alone improved efficiency by 40% compared to manual approaches. The final ensemble of models enabled accurate multi-step-ahead forecasting that the business team could use for inventory planning and revenue projections.",
     highlights: [
       { label: "Efficiency Gain", value: "+40%" },
       { label: "Models", value: "Linear, Ridge, ARIMA" },
       { label: "Use Case", value: "Revenue Forecasting" },
     ],
     tags: ["Scikit-learn", "ARIMA", "Ridge Regression", "Feature Engineering", "Python", "Time Series"],
+  },
+  {
+    title: "Daily Digest Pipeline",
+    period: "Mar 2026 – May 2026",
+    tagline: "A self-serving LLM pipeline that reads the internet so I don't have to.",
+    summary: "A personal automation project: a cron job that pulls five RSS categories plus live market data, summarizes them with Groq's Llama 3.3 70B, and delivers a dashboard straight to my own iMessage every morning.",
+    description: "This one started as a way to stop opening ten tabs before breakfast. A Python script runs on a cron schedule at 8am, pulling from five personalized RSS categories alongside live market data, then passes everything through Groq's Llama 3.3 70B to summarize it into a single readable brief. The output renders as a dark burgundy HTML dashboard, which gets delivered to my own iMessage automatically via AppleScript. No app to open, no feed to scroll, it just shows up. The whole thing is deployed and running from GitHub.",
+    highlights: [
+      { label: "Sources", value: "5 RSS categories + live markets" },
+      { label: "Model", value: "Llama 3.3 70B via Groq" },
+      { label: "Delivery", value: "iMessage, 8am daily" },
+    ],
+    tags: ["Groq", "Llama 3.3", "Python", "Cron", "AppleScript"],
+  },
+  {
+    title: "California State Bar Scraper",
+    period: "2025",
+    tagline: "Automating attorney lookups that used to mean one search at a time.",
+    summary: "A Python and Playwright scraper that pulls attorney records from the California State Bar's public lookup tool.",
+    description: "The State Bar's own lookup tool only lets you search one attorney at a time, which doesn't scale if you need records for a list of names. I built a scraper in Python with Playwright to automate that lookup and pull the results in bulk, turning a manual, repetitive task into something that runs unattended.",
+    highlights: [
+      { label: "Stack", value: "Python + Playwright" },
+      { label: "Solves", value: "Bulk attorney record lookup" },
+    ],
+    tags: ["Python", "Playwright", "Web Scraping", "Automation"],
+  },
+  {
+    title: "CleanAndSummarize Excel Macro",
+    period: "2024",
+    tagline: "A VBA macro that turns messy raw exports into a clean summary in one click.",
+    summary: "A working VBA macro that automates cleaning and summarizing raw Excel exports.",
+    description: "Built for the kind of spreadsheet cleanup that eats up time without needing much thought: stripping blank rows, standardizing formats, and rolling raw exports up into a summary view. The macro runs on any workbook that follows the expected layout, no manual click-through required.",
+    highlights: [
+      { label: "Stack", value: "Excel VBA" },
+      { label: "Solves", value: "Manual data cleanup and summarization" },
+    ],
+    tags: ["Excel", "VBA", "Automation"],
   },
 ];
 const SKILLS = {
@@ -414,6 +453,8 @@ const SKILLS = {
     { name: "Matplotlib", level: "Advanced" },
     { name: "Seaborn", level: "Intermediate" },
     { name: "D3.js", level: "Intermediate" },
+    { name: "React", level: "Intermediate" },
+    { name: "JavaScript", level: "Intermediate" },
     { name: "Microsoft Excel", level: "Advanced" },
   ],
   "Tools & Infrastructure": [
@@ -434,8 +475,8 @@ const EXPERIENCE = [
     org: "Arizona State University – ISSC",
     period: "Aug 2025 – Present",
     points: [
-      "Coordinate university-wide, culturally inclusive events and welcome week programming for 13,000+ international students — managing end-to-end execution across arrival logistics, campus orientations, and cultural initiatives.",
-      "Designed A/B tests on multi-channel event promotion (WhatsApp, Instagram, email) and analyzed RSVP/engagement data to optimize outreach strategy — driving a 15% increase in average event turnout.",
+      "Coordinate university-wide, culturally inclusive events and welcome week programming for 13,000+ international students, managing end-to-end execution across arrival logistics, campus orientations, and cultural initiatives.",
+      "Designed A/B tests on multi-channel event promotion (WhatsApp, Instagram, email) and analyzed RSVP/engagement data to optimize outreach strategy, driving a 15% increase in average event turnout.",
       "Collect, clean, and analyze event participation datasets to identify turnout drivers and demographic preferences, translating findings into actionable recommendations for programming decisions.",
     ],
   },
@@ -444,7 +485,7 @@ const EXPERIENCE = [
     org: "DA-IICT – Under Prof. Srimanta Mandal",
     period: "Jun 2025 – Aug 2025",
     points: [
-      "Conducted a comparative study of low-light image enhancement techniques — LIME, Retinex (MSRCR), and SNR-Aware Transformers — evaluating trade-offs between pixel-level fidelity and structural similarity on the LOL dataset.",
+      "Conducted a comparative study of low-light image enhancement techniques (LIME, Retinex/MSRCR, and SNR-Aware Transformers), evaluating trade-offs between pixel-level fidelity and structural similarity on the LOL dataset.",
       "Implemented LIME and Retinex methods in Python/OpenCV, running quantitative evaluations using PSNR and SSIM metrics across 15 paired low-light/normal-light image sets to benchmark performance.",
       "Authored a research report analyzing how classical optimization (LIME), biologically-inspired (Retinex), and deep learning (SNR-Aware Transformer) approaches handle noise, color restoration, and illumination correction differently.",
     ],
@@ -465,12 +506,12 @@ const EXPERIENCE = [
     period: "May 2023 – Aug 2023",
     points: [
       "Conducted market sizing, competitive analysis, and performance benchmarking on robotic systems for healthcare and hospitality verticals; presented data-driven ROI recommendations to leadership that contributed to securing a pilot with TAJ Hotels.",
-      "Analyzed usability metrics and system performance data across deployments — identified navigation bottlenecks and drove a 20% improvement in interaction accuracy.",
+      "Analyzed usability metrics and system performance data across deployments, identified navigation bottlenecks, and drove a 20% improvement in interaction accuracy.",
     ],
   },
 ];
 const EDUCATION = [
-  { degree: "M.S. in Data Science, Analytics and Engineering", school: "Arizona State University, Tempe, Arizona", period: "Graduating May 2026", gpa: "GPA: 3.63", courses: "Data Mining, Information Assurance & Security, Data Processing at Scale, Statistics for Data Analysts, Statistical Machine Learning, Data Visualization" },
+  { degree: "M.S. in Data Science, Analytics and Engineering", school: "Arizona State University, Tempe, Arizona", period: "Completed May 2026", gpa: "GPA: 3.62", courses: "Data Mining, Information Assurance & Security, Data Processing at Scale, Statistics for Data Analysts, Statistical Machine Learning, Data Visualization" },
   { degree: "B.S. Honors in Computer Science", school: "Ahmedabad University, Gujarat, India", period: "May 2024", courses: "Machine Learning, Data Structures & Algorithms, Human-Computer Interactions, OOP, Operating Systems, Probabilistic Graphical Models" },
 ];
 const CERTIFICATIONS = [
@@ -713,7 +754,7 @@ function SectionLabel({ number, text }) {
       marginBottom: "16px",
       fontFamily: "var(--font-body)",
     }}>
-      {number} — {text}
+      {number}. {text}
     </div>
   );
 }
@@ -759,19 +800,19 @@ function HomePage({ setPage }) {
           </span>
         </div>
         <h1 className="fade-up stagger-2" style={{
-          fontFamily: "var(--font-heading)", fontWeight: 500,
+          fontFamily: "var(--font-heading)", fontWeight: "var(--heading-weight)",
           fontSize: "clamp(3rem, 8vw, 5.8rem)", lineHeight: 1.02,
           letterSpacing: "-0.035em", marginBottom: "32px",
           color: "var(--text)",
         }}>
-          Hi, I'm <span style={{ fontStyle: "italic", fontWeight: 500, color: "var(--accent)" }}>Freya</span>.
+          Hi, I'm <span style={{ fontStyle: "italic", fontWeight: "var(--heading-weight)", color: "var(--accent)" }}>Freya</span>.
         </h1>
         <p className="fade-up stagger-3" style={{
           fontSize: "1.15rem", lineHeight: 1.7, color: "var(--muted)",
           maxWidth: "620px", marginBottom: "48px",
           fontWeight: 400,
         }}>
-          A Data Science grad student at ASU who likes turning messy data into things people actually use —
+          A Data Science grad student at ASU who likes turning messy data into things people actually use,
           from real-time streaming pipelines to interactive visual stories and agentic AI systems.
           Currently looking for a full-time data analyst or data engineering role.
         </p>
@@ -862,7 +903,7 @@ function AboutPage() {
     <div style={{ minHeight: "100vh", padding: "140px 48px 80px", maxWidth: "1100px", margin: "0 auto" }}>
       <div className="fade-up stagger-1"><SectionLabel number="01" text="About" /></div>
       <h2 className="fade-up stagger-2" style={{
-        fontFamily: "var(--font-heading)", fontWeight: 500,
+        fontFamily: "var(--font-heading)", fontWeight: "var(--heading-weight)",
         fontSize: "clamp(2.2rem, 5vw, 3.2rem)", lineHeight: 1.12,
         marginBottom: "56px", letterSpacing: "-0.02em", color: "var(--text)",
       }}>
@@ -872,7 +913,7 @@ function AboutPage() {
       <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "56px" }}>
         <div className="fade-up stagger-3">
           <p style={{ fontSize: "1.02rem", lineHeight: 1.75, color: "var(--muted)", marginBottom: "20px" }}>
-            I'm <strong style={{ color: "var(--text)", fontWeight: 600 }}>Freya Hemal Shah</strong> — an analytical and motivated Data Science student with a strong CS foundation and hands-on experience building real-time analytics pipelines, ML models, and spatial analyses that extract actionable insights.
+            I'm <strong style={{ color: "var(--text)", fontWeight: 600 }}>Freya Hemal Shah</strong>, an analytical and motivated Data Science student with a strong CS foundation and hands-on experience building real-time analytics pipelines, ML models, and spatial analyses that extract actionable insights.
           </p>
           <p style={{ fontSize: "1.02rem", lineHeight: 1.75, color: "var(--muted)", marginBottom: "20px" }}>
             My work spans streaming data through Kafka into Neo4j graphs, scrollytelling visualizations about wage inequality, agentic AI pipelines for financial analysis, geospatial analysis of food access in Phoenix, and coordinating cultural programming for thousands of international students at ASU.
@@ -1137,7 +1178,7 @@ function ProjectsPage() {
       <p className="fade-up stagger-3" style={{
         fontSize: "1rem", color: "var(--muted)", marginBottom: "56px", maxWidth: "600px", lineHeight: 1.6,
       }}>
-        Click any project to expand the full story — what I built, how I built it, and what it achieved.
+        Click any project to expand the full story: what I built, how I built it, and what it achieved.
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
         {PROJECTS.map((proj, i) => (
@@ -1492,7 +1533,7 @@ function ContactPage() {
     <div style={{ minHeight: "100vh", padding: "140px 48px 80px", maxWidth: "1000px", margin: "0 auto" }}>
       <div className="fade-up stagger-1"><SectionLabel number="05" text="Contact" /></div>
       <h2 className="fade-up stagger-2" style={{
-        fontFamily: "var(--font-heading)", fontWeight: 500,
+        fontFamily: "var(--font-heading)", fontWeight: "var(--heading-weight)",
         fontSize: "clamp(2.2rem, 5vw, 3.2rem)", lineHeight: 1.12,
         marginBottom: "22px", letterSpacing: "-0.02em", color: "var(--text)",
       }}>
@@ -1503,7 +1544,7 @@ function ContactPage() {
         maxWidth: "580px", marginBottom: "48px",
       }}>
         Currently open to full-time data analyst, data engineering, and consulting roles.
-        Whether you have an opportunity, a project, or just want to chat — I'd love to hear from you.
+        Whether you have an opportunity, a project, or just want to chat, I'd love to hear from you.
       </p>
       <div className="fade-up stagger-4" style={{
         display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "14px", maxWidth: "780px",
